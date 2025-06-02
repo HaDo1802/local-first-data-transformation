@@ -30,7 +30,7 @@ This project follows a layered **ETL pipeline** that transforms raw CRM and ERP 
 - CRM provides sales, product, and customer data
 - ERP enriches with product categories, customer locations, and demographics
 ![Data Integration](docs/data_integration.png)
-```text
+
 CSV files → Bronze Tables → Silver Tables → Gold-layer Views → Analytics
 
 ---
