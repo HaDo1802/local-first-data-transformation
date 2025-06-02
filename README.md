@@ -12,7 +12,7 @@ This project involves:
 1. **[Data Architecture](#-data-architecture)**: Designing a modern data warehouse using Medallion Architecture (**Bronze**, **Silver**, **Gold**).
 2. **[ETL Pipelines](#-etl-pipeline-overview)**: Extracting, transforming, and loading data from source systems into the warehouse.
 3. **[Data Modeling](#-data-modeling)**: Developing fact and dimension tables using star schema optimized for analytical queries.
-
+4. **[Project Managemen](#-project-management)**: Structure and manage the projects step by step in an organized and scalable manner.
 
 ---
 ## 🏗️ Data Architecture
@@ -23,7 +23,7 @@ The data architecture for this project follows Medallion Architecture **Bronze**
 1. **Bronze Layer**: Stores raw data as-is from the source systems. Data is ingested from CSV Files into SQL Server Database.
 2. **Silver Layer**: This layer includes data cleansing, standardization, and normalization processes to prepare data for analysis.
 3. **Gold Layer**: Houses business-ready data modeled into a star schema required for reporting and analytics.
-
+ 
 ## 🔁 ETL Pipeline Overview
 
 This project follows a layered **ETL pipeline** that transforms raw CRM and ERP data into analytical insights. The process uses `plpgsql` stored procedures to handle loading, transformation, and enrichment. Data from CRM and ERP systems is merged at the Silver Layer and joined in the Gold Layer:
@@ -121,7 +121,6 @@ Develop SQL-based analytics to deliver detailed insights into:
 
 These insights empower stakeholders with key business metrics, enabling strategic decision-making.  
 
-For more details, refer to [docs/requirements.md](docs/requirements.md).
 
 ## 📂 Repository Structure
 ```
@@ -161,5 +160,5 @@ This project is licensed under the [MIT License](LICENSE). You are free to use, 
 Hi there! I'm **Ha Do**. I’m an IT professional and passionate YouTuber on a mission to share knowledge and make working with data enjoyable and engaging!
 
 Let's stay in touch! Feel free to connect with me on the following platforms:
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/ha-van-do/)]
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/ha-van-do/)
 
