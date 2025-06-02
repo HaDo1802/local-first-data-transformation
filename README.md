@@ -72,17 +72,27 @@ To ensure scalability and readability, consistent naming standards are used thro
 
 ---
 
-## 🛠️ Important Links & Tools:
+## 🧩 Project Management
 
-Everything is for Free!
-- **[Datasets](datasets/):** Access to the project dataset (csv files).
-- **[SQL Server Express](https://www.microsoft.com/en-us/sql-server/sql-server-downloads):** Lightweight server for hosting your SQL database.
-- **[SQL Server Management Studio (SSMS)](https://learn.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver16):** GUI for managing and interacting with databases.
-- **[Git Repository](https://github.com/):** Set up a GitHub account and repository to manage, version, and collaborate on your code efficiently.
-- **[DrawIO](https://www.drawio.com/):** Design data architecture, models, flows, and diagrams.
-- **[Notion](https://www.notion.com/):** All-in-one tool for project management and organization.
-- **[Notion Project Steps](https://thankful-pangolin-2ca.notion.site/SQL-Data-Warehouse-Project-16ed041640ef80489667cfe2f380b269?pvs=4):** Access to All Project Phases and Tasks.
+Efficient project delivery is just as important as data engineering itself. To structure and track this project professionally, I used **Notion** as a centralized platform for documentation, planning, and execution.
 
+🔗 **Access the public project workspace**:  
+👉 [SQL Data Warehouse Project – Notion Board](https://www.notion.so/SQL-Data-Warehouse-Project-1eccb53ed480800ca067d612d77163a4)
+
+### ✅ Features of the Notion workspace:
+- **Task Phases**: Clearly segmented into Bronze, Silver, Gold, Documentation, and Testing phases
+- **Kanban Boards**: For tracking TODO → In Progress → Done
+- **Checklist Templates**: Each layer (ETL, modeling, quality) has its own to-do tracking
+- **Linked Docs**: Architecture diagrams, data catalog, and SQL scripts all linked within Notion
+- **Self-review & QA Logs**: Ensures accuracy and completeness before each milestone
+- **Goal Alignment**: Each task is mapped to roles like Data Architect, ETL Developer, and Analyst
+
+📋 This workspace showcases **project management skills** and emphasizes:
+- Task breakdown and prioritization  
+- Milestone tracking  
+- Cross-functional thinking (from engineering to business-ready analytics)
+
+> ✅ By organizing this project in Notion, I demonstrate both technical execution and structured delivery — an essential quality for any aspiring data engineer or data architect.
 ---
 
 ## 🚀 Project Requirements
@@ -151,5 +161,5 @@ This project is licensed under the [MIT License](LICENSE). You are free to use, 
 Hi there! I'm **Ha Do**. I’m an IT professional and passionate YouTuber on a mission to share knowledge and make working with data enjoyable and engaging!
 
 Let's stay in touch! Feel free to connect with me on the following platforms:
-[![LinkedIn](https://www.linkedin.com/in/ha-van-do/)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/ha-van-do/)]
 
