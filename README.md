@@ -12,7 +12,7 @@ This project involves:
 1. **[Data Architecture](#-data-architecture)**: Designing a modern data warehouse using Medallion Architecture (**Bronze**, **Silver**, **Gold**).
 2. **[ETL Pipelines](#-etl-pipeline-overview)**: Extracting, transforming, and loading data from source systems into the warehouse.
 3. **[Data Modeling](#-data-modeling)**: Developing fact and dimension tables using star schema optimized for analytical queries.
-4. **[Project Managemen](#-project-management)**: Structure and manage the projects step by step in an organized and scalable manner.
+4. **[Project Management](#-project-management)**: Structure and manage the projects step by step in an organized and scalable manner.
 
 ---
 ## 🏗️ Data Architecture
