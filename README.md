@@ -5,6 +5,21 @@ Welcome to the **Data Warehouse and Analytics Project** repository! 🚀
 This project demonstrates a comprehensive data warehousing and analytics solution, from building a data warehouse to generating actionable insights. Designed as a portfolio project, it highlights industry best practices in data engineering and analytics.
 
 ---
+## 📖 Project Overview
+
+This project involves:
+
+1. **Data Architecture**: Designing a Modern Data Warehouse Using Medallion Architecture **Bronze**, **Silver**, and **Gold** layers.
+2. **ETL Pipelines**: Extracting, transforming, and loading data from source systems into the warehouse.
+3. **Data Modeling**: Developing fact and dimension tables optimized for analytical queries.
+4. **Analytics & Reporting**: Creating SQL-based reports and dashboards for actionable insights.
+
+🎯 The project is structured to discuss these topics:
+- Data Architect  
+- ETL Pipeline Developer  
+- Data Modeling 
+
+---
 ## 🏗️ Data Architecture
 
 The data architecture for this project follows Medallion Architecture **Bronze**, **Silver**, and **Gold** layers:
@@ -15,22 +30,41 @@ The data architecture for this project follows Medallion Architecture **Bronze**
 3. **Gold Layer**: Houses business-ready data modeled into a star schema required for reporting and analytics.
 
 ---
-## 📖 Project Overview
+## 🧠 Data Modeling: Building the Star Schema
 
-This project involves:
+The **Gold Layer** is modeled using a classic **star schema** for optimal performance and clarity in reporting.  
 
-1. **Data Architecture**: Designing a Modern Data Warehouse Using Medallion Architecture **Bronze**, **Silver**, and **Gold** layers.
-2. **ETL Pipelines**: Extracting, transforming, and loading data from source systems into the warehouse.
-3. **Data Modeling**: Developing fact and dimension tables optimized for analytical queries.
-4. **Analytics & Reporting**: Creating SQL-based reports and dashboards for actionable insights.
+### ⭐ Fact Table
+- **`gold.fact_sales`**  
+  Contains sales transactions: order dates, quantities, pricing, and relationships to product and customer dimensions.
 
-🎯 This repository is an excellent resource for professionals and students looking to showcase expertise in:
-- SQL Development
-- Data Architect
-- Data Engineering  
-- ETL Pipeline Developer  
-- Data Modeling  
-- Data Analytics  
+### ⭐ Dimension Tables
+- **`gold.dim_customers`**: Customer demographics and CRM/ERP merge logic
+- **`gold.dim_products`**: Product attributes + category/subcategory enrichment
+
+### 🛠 Modeling Strategy
+- Surrogate keys generated using `ROW_NUMBER()` for consistent joins.
+- `LEFT JOIN` logic used to integrate CRM and ERP sources in dimension views.
+- Null handling and data normalization (e.g., `n/a`, trimmed strings, date casting) applied in the Silver layer and preserved in Gold.
+
+📄 For technical details, see `scripts/gold/Load_Gold.sql`
+
+---
+
+## ✍️ Naming Conventions
+
+To ensure scalability and readability, consistent naming standards are used throughout the project.
+
+| Object Type      | Naming Format                      | Example                     |
+|------------------|-------------------------------------|-----------------------------|
+| **Bronze Tables**| `bronze.<source>_<table>`           | `bronze.crm_cust_info`      |
+| **Silver Tables**| `silver.<source>_<table>`           | `silver.crm_sales_details`  |
+| **Gold Views**   | `gold.dim_<entity>` / `gold.fact_<entity>` | `gold.dim_customers`, `gold.fact_sales` |
+| **Surrogate Keys**| `<entity>_key`                    | `customer_key`, `product_key` |
+| **System Columns**| `dwh_<description>`               | `dwh_create_date`           |
+| **ETL Procedures**| `load_<layer>()`                  | `load_bronze()`, `load_silver()` |
+
+📄 See: [`docs/naming-conventions.md`](docs/naming-conventions.md)
 
 ---
 
@@ -110,13 +144,8 @@ This project is licensed under the [MIT License](LICENSE). You are free to use, 
 
 ## 🌟 About Me
 
-Hi there! I'm **Baraa Khatib Salkini**, also known as **Data With Baraa**. I’m an IT professional and passionate YouTuber on a mission to share knowledge and make working with data enjoyable and engaging!
+Hi there! I'm **Ha Do**. I’m an IT professional and passionate YouTuber on a mission to share knowledge and make working with data enjoyable and engaging!
 
 Let's stay in touch! Feel free to connect with me on the following platforms:
+[![LinkedIn](https://www.linkedin.com/in/ha-van-do/)
 
-[![YouTube](https://img.shields.io/badge/YouTube-red?style=for-the-badge&logo=youtube&logoColor=white)](http://bit.ly/3GiCVUE)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/baraa-khatib-salkini)
-[![Website](https://img.shields.io/badge/Website-000000?style=for-the-badge&logo=google-chrome&logoColor=white)](https://www.datawithbaraa.com)
-[![Newsletter](https://img.shields.io/badge/Newsletter-FF5722?style=for-the-badge&logo=substack&logoColor=white)](https://bit.ly/BaraaNewsletter)
-[![PayPal](https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://paypal.me/baraasalkini)
-[![Join](https://img.shields.io/badge/Join-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/@datawithbaraa)
