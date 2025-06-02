@@ -11,8 +11,8 @@ This project involves:
 
 1. **[Data Architecture](#-data-architecture)**: Designing a modern data warehouse using Medallion Architecture (**Bronze**, **Silver**, **Gold**).
 2. **[ETL Pipelines](#-etl-pipeline-overview)**: Extracting, transforming, and loading data from source systems into the warehouse.
-3. **[Data Modeling](#-data-modeling--star-schema-design)**: Developing fact and dimension tables using star schema optimized for analytical queries.
-4. **[Analytics & Reporting](#-analytics--reporting)**: Creating SQL-based reports and dashboards for actionable insights.
+3. **[Data Modeling](#-data-modeling)**: Developing fact and dimension tables using star schema optimized for analytical queries.
+
 
 ---
 ## 🏗️ Data Architecture
@@ -34,7 +34,7 @@ This project follows a layered **ETL pipeline** that transforms raw CRM and ERP 
 CSV files → Bronze Tables → Silver Tables → Gold-layer Views → Analytics
 
 ---
-## 🧠 Data Modeling: Building the Star Schema
+## 🧠 Data Modeling
 
 The **Gold Layer** is modeled using a classic **star schema** for optimal performance and clarity in reporting.  
 
