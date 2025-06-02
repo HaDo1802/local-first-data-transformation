@@ -9,15 +9,10 @@ This project demonstrates a comprehensive data warehousing and analytics solutio
 
 This project involves:
 
-1. **Data Architecture**: Designing a Modern Data Warehouse Using Medallion Architecture **Bronze**, **Silver**, and **Gold** layers.
-2. **ETL Pipelines**: Extracting, transforming, and loading data from source systems into the warehouse.
-3. **Data Modeling**: Developing fact and dimension tables optimized for analytical queries.
-4. **Analytics & Reporting**: Creating SQL-based reports and dashboards for actionable insights.
-
-🎯 The project is structured to discuss these topics:
-- Data Architect  
-- ETL Pipeline Developer  
-- Data Modeling 
+1. **[Data Architecture](#-data-architecture)**: Designing a modern data warehouse using Medallion Architecture (**Bronze**, **Silver**, **Gold**).
+2. **[ETL Pipelines](#-etl-pipeline-overview)**: Extracting, transforming, and loading data from source systems into the warehouse.
+3. **[Data Modeling](#-data-modeling--star-schema-design)**: Developing fact and dimension tables using star schema optimized for analytical queries.
+4. **[Analytics & Reporting](#-analytics--reporting)**: Creating SQL-based reports and dashboards for actionable insights.
 
 ---
 ## 🏗️ Data Architecture
@@ -28,6 +23,15 @@ The data architecture for this project follows Medallion Architecture **Bronze**
 1. **Bronze Layer**: Stores raw data as-is from the source systems. Data is ingested from CSV Files into SQL Server Database.
 2. **Silver Layer**: This layer includes data cleansing, standardization, and normalization processes to prepare data for analysis.
 3. **Gold Layer**: Houses business-ready data modeled into a star schema required for reporting and analytics.
+
+## 🔁 ETL Pipeline Overview
+
+This project follows a layered **ETL pipeline** that transforms raw CRM and ERP data into analytical insights. The process uses `plpgsql` stored procedures to handle loading, transformation, and enrichment. Data from CRM and ERP systems is merged at the Silver Layer and joined in the Gold Layer:
+- CRM provides sales, product, and customer data
+- ERP enriches with product categories, customer locations, and demographics
+![Data Integration](docs/data_integration.png)
+```text
+CSV files → Bronze Tables → Silver Tables → Gold-layer Views → Analytics
 
 ---
 ## 🧠 Data Modeling: Building the Star Schema
@@ -47,7 +51,7 @@ The **Gold Layer** is modeled using a classic **star schema** for optimal perfor
 - `LEFT JOIN` logic used to integrate CRM and ERP sources in dimension views.
 - Null handling and data normalization (e.g., `n/a`, trimmed strings, date casting) applied in the Silver layer and preserved in Gold.
 
-📄 For technical details, see `scripts/gold/Load_Gold.sql`
+📄 For technical details, see [`scripts/gold/Load_Gold.sql`](scripts/gold/Load_Gold.sql)
 
 ---
 
