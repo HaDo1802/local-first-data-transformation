@@ -2,7 +2,7 @@
 # Data Warehouse and Analytics Project
 
 Welcome to the **Data Warehouse and Analytics Project** repository! 🚀  
-This project demonstrates a comprehensive data warehousing and analytics solution, from building a data warehouse to generating actionable insights. Designed as a portfolio project, it highlights industry best practices in data engineering and analytics.
+This project illustates my practices on data modeling and data warehouse learning. Do not have extremely trendy tech stack but could be a great source for learning purposes for foundations on data!
 
 ---
 ## 📖 Project Overview
@@ -11,7 +11,7 @@ This project involves:
 
 1. **[Data Architecture](#-data-architecture)**: Designing a modern data warehouse using Medallion Architecture (**Bronze**, **Silver**, **Gold**).
 2. **[ETL Pipelines](#-etl-pipeline-overview)**: Extracting, transforming, and loading data from source systems into the warehouse.
-3. **[Data Modeling](#-data-modeling)**: Developing fact and dimension tables using star schema optimized for analytical queries.
+3. **[Data Modeling](#-data-modeling)**: Developing fact and dimension tables using common KimBall star schema to optimize data for analytical queries.
 4. **[Project Management](#-project-management)**: Structure and manage the projects step by step in an organized and scalable manner.
 
 ---
@@ -51,7 +51,7 @@ The **Gold Layer** is modeled using a classic **star schema** for optimal perfor
 - `LEFT JOIN` logic used to integrate CRM and ERP sources in dimension views.
 - Null handling and data normalization (e.g., `n/a`, trimmed strings, date casting) applied in the Silver layer and preserved in Gold.
 
-📄 For technical details, see [`scripts/gold/Load_Gold.sql`](scripts/gold/Load_Gold.sql)
+📄 For technique details, see [`scripts/gold/Load_Gold.sql`](scripts/gold/Load_Gold.sql)
 
 ---
 
