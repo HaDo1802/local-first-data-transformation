@@ -1,0 +1,194 @@
+version: 2
+
+models:
+  - name: silver_crm_customers
+    description: "Cleaned and standardized customer information from CRM system"
+    meta:
+      layer: "silver"
+      source_system: "crm"
+      data_quality: "cleaned_and_standardized"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - cst_id
+    columns:
+      - name: cst_id
+        description: "Customer ID - Primary Key"
+        tests:
+          - not_null
+          - unique
+      - name: cst_key
+        description: "Customer business key"
+        tests:
+          - not_null
+      - name: first_name
+        description: "Cleaned customer first name"
+      - name: last_name
+        description: "Cleaned customer last name"
+      - name: marital_status
+        description: "Standardized marital status"
+        tests:
+          - accepted_values:
+              values: ['Single', 'Married', 'Unknown']
+      - name: gender
+        description: "Standardized gender"
+        tests:
+          - accepted_values:
+              values: ['Male', 'Female', 'Unknown']
+
+  - name: silver_crm_products
+    description: "Cleaned and standardized product information from CRM system"
+    meta:
+      layer: "silver"
+      source_system: "crm"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - prd_id
+    columns:
+      - name: prd_id
+        description: "Product ID - Primary Key"
+        tests:
+          - not_null
+          - unique
+      - name: category_id
+        description: "Extracted category ID"
+        tests:
+          - not_null
+      - name: product_key
+        description: "Cleaned product key"
+        tests:
+          - not_null
+      - name: product_name
+        description: "Cleaned product name"
+      - name: cost
+        description: "Product cost (0 if null)"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 10000
+      - name: product_line
+        description: "Standardized product line"
+        tests:
+          - accepted_values:
+              values: ['Mountain', 'Road', 'Other Sales', 'Touring', 'Unknown']
+
+  - name: silver_crm_sales
+    description: "Cleaned and standardized sales transactions from CRM system"
+    meta:
+      layer: "silver"
+      source_system: "crm"
+      refresh_frequency: "incremental"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - order_number
+            - product_key
+    columns:
+      - name: order_number
+        description: "Sales order number"
+        tests:
+          - not_null
+      - name: product_key
+        description: "Product key"
+        tests:
+          - not_null
+      - name: customer_id
+        description: "Customer ID"
+        tests:
+          - not_null
+      - name: order_date
+        description: "Parsed order date"
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: "'2000-01-01'"
+              max_value: "'2030-12-31'"
+      - name: sales_amount
+        description: "Calculated sales amount"
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 100000
+      - name: quantity
+        description: "Quantity sold"
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 1
+              max_value: 1000
+
+  - name: silver_erp_customer_demographics
+    description: "Cleaned customer demographics from ERP system"
+    meta:
+      layer: "silver"
+      source_system: "erp"
+    columns:
+      - name: customer_id
+        description: "Cleaned customer ID"
+        tests:
+          - not_null
+      - name: birth_date
+        description: "Validated birth date"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: "'1900-01-01'"
+              max_value: "current_date"
+      - name: gender
+        description: "Standardized gender"
+        tests:
+          - accepted_values:
+              values: ['Male', 'Female', 'Unknown']
+      - name: age
+        description: "Calculated age"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 120
+
+  - name: silver_erp_locations
+    description: "Cleaned customer locations from ERP system"
+    meta:
+      layer: "silver"
+      source_system: "erp"
+    columns:
+      - name: customer_id
+        description: "Cleaned customer ID"
+        tests:
+          - not_null
+      - name: country
+        description: "Standardized country name"
+        tests:
+          - not_null
+      - name: region
+        description: "Calculated region"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['North America', 'Europe', 'Oceania', 'Asia', 'Other']
+
+  - name: silver_erp_product_categories
+    description: "Cleaned product categories from ERP system"
+    meta:
+      layer: "silver"
+      source_system: "erp"
+    columns:
+      - name: category_id
+        description: "Category ID - Primary Key"
+        tests:
+          - not_null
+          - unique
+      - name: category
+        description: "Category name"
+        tests:
+          - not_null
+      - name: subcategory
+        description: "Subcategory name"
+        tests:
+          - not_null
+      - name: maintenance_required
+        description: "Standardized maintenance flag"
+        tests:
+          - accepted_values:
+              values: ['Yes', 'No', 'Unknown']

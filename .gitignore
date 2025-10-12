@@ -1,0 +1,41 @@
+# Ignore environment files
+.env
+.env.*
+
+# Ignore Python cache and virtual environments
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+venv/
+env/
+
+# Ignore database files
+*.db
+*.sqlite3
+
+# Ignore log files
+*.log
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore IDE/project files
+.vscode/
+.idea/
+*.swp
+
+# Ignore credentials and secrets
+*.key
+*.pem
+*.crt
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore node modules (if applicable)
+node_modules/
+
+# Ignore this personal note: 
+traditional_data_model/Architecture_Design/

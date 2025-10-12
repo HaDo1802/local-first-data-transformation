@@ -1,0 +1,73 @@
+name: 'dbt_data_model'
+version: '1.0.0'
+config-version: 2
+
+profile: 'dbt_data_model'
+
+# Directory configurations
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+# Build artifacts
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+  - "logs"
+
+# Global configurations
+vars:
+  # Date variables for incremental loading
+  start_date: '2010-01-01'
+  end_date: '2025-12-31'
+  
+  # Data quality thresholds
+  acceptable_null_rate: 0.05
+  max_duplicate_rate: 0.01
+
+# Model configurations by layer
+models:
+  dbt_data_model:
+    bronze:
+      +materialized: table
+      +schema: bronze
+      +on_schema_change: "append_new_columns"
+      +meta:
+        layer: "bronze"
+        owner: "hado"
+    
+    silver:
+      +materialized: table
+      +schema: silver
+      +on_schema_change: "fail"
+      +pre-hook: "{{ log_model_start() }}"
+      +post-hook: "{{ log_model_end() }}"
+      +meta:
+        layer: "silver" 
+        owner: "hado"
+    
+    gold:
+      +materialized: view
+      +schema: gold
+      +meta:
+        layer: "gold"
+        owner: "hado"
+
+tests:
+  +store_failures: true
+  +schema: test_failures
+
+snapshots:
+  dbt_data_model:
+    +target_schema: snapshots
+    +strategy: timestamp
+    +updated_at: dwh_updated_at
+
+seeds:
+  dbt_data_model:
+    +schema: seeds
+    +quote_columns: false

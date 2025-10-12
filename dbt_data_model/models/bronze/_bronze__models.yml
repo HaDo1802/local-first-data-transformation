@@ -1,0 +1,138 @@
+version: 2
+
+models:
+  - name: bronze_crm_cust_info
+    description: "Raw customer information from CRM system - Bronze layer"
+    meta:
+      layer: "bronze"
+      source_system: "crm"
+      data_classification: "internal"
+    columns:
+      - name: cst_id
+        description: "Customer ID - Primary Key"
+        tests:
+          - not_null
+          - unique
+      - name: cst_key
+        description: "Customer business key"
+        tests:
+          - not_null
+      - name: cst_firstname
+        description: "Customer first name"
+      - name: cst_lastname
+        description: "Customer last name"
+      - name: cst_marital_status
+        description: "Raw marital status code (M/S)"
+      - name: cst_gndr
+        description: "Raw gender code (M/F)"
+      - name: cst_create_date
+        description: "Customer creation date"
+        tests:
+          - not_null
+
+  - name: bronze_crm_prd_info
+    description: "Raw product information from CRM system - Bronze layer"
+    meta:
+      layer: "bronze"
+      source_system: "crm"
+    columns:
+      - name: prd_id
+        description: "Product ID - Primary Key"
+        tests:
+          - not_null
+          - unique
+      - name: prd_key
+        description: "Product business key"
+        tests:
+          - not_null
+      - name: prd_nm
+        description: "Product name"
+      - name: prd_cost
+        description: "Product cost"
+      - name: prd_line
+        description: "Raw product line code"
+      - name: prd_start_dt
+        description: "Product start date"
+      - name: prd_end_dt
+        description: "Product end date"
+
+  - name: bronze_crm_sales_details
+    description: "Raw sales transaction details from CRM system - Bronze layer"
+    meta:
+      layer: "bronze"
+      source_system: "crm"
+      refresh_frequency: "incremental"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - sls_ord_num
+            - sls_prd_key
+    columns:
+      - name: sls_ord_num
+        description: "Sales order number"
+        tests:
+          - not_null
+      - name: sls_prd_key
+        description: "Product key"
+        tests:
+          - not_null
+      - name: sls_cust_id
+        description: "Customer ID"
+        tests:
+          - not_null
+      - name: sls_order_dt
+        description: "Order date in YYYYMMDD format"
+      - name: sls_sales
+        description: "Sales amount"
+      - name: sls_quantity
+        description: "Quantity sold"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 1
+              max_value: 1000
+
+  - name: bronze_erp_cust_az12
+    description: "Raw customer demographics from ERP system - Bronze layer"
+    meta:
+      layer: "bronze"
+      source_system: "erp"
+    columns:
+      - name: cid
+        description: "Customer ID from ERP system"
+        tests:
+          - not_null
+      - name: bdate
+        description: "Birth date"
+      - name: gen
+        description: "Gender"
+
+  - name: bronze_erp_loc_a101
+    description: "Raw customer location from ERP system - Bronze layer"
+    meta:
+      layer: "bronze"
+      source_system: "erp"
+    columns:
+      - name: cid
+        description: "Customer ID from ERP system"
+        tests:
+          - not_null
+      - name: cntry
+        description: "Country code or name"
+
+  - name: bronze_erp_px_cat_g1v2
+    description: "Raw product categories from ERP system - Bronze layer"
+    meta:
+      layer: "bronze"
+      source_system: "erp"
+    columns:
+      - name: id
+        description: "Category ID - Primary Key"
+        tests:
+          - not_null
+          - unique
+      - name: cat
+        description: "Category name"
+      - name: subcat
+        description: "Subcategory name"
+      - name: maintenance
+        description: "Maintenance required flag"

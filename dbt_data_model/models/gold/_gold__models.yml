@@ -1,0 +1,239 @@
+version: 2
+
+models:
+  - name: dim_customers
+    description: "Customer dimension table combining CRM and ERP customer data"
+    meta:
+      layer: "gold"
+      model_type: "dimension"
+      business_owner: "analytics_team"
+      grain: "One row per unique customer"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - customer_key
+    columns:
+      - name: customer_key
+        description: "Surrogate key for customer dimension"
+        tests:
+          - not_null
+          - unique
+      - name: customer_id
+        description: "Natural key - Customer ID from CRM"
+        tests:
+          - not_null
+          - unique
+      - name: customer_number
+        description: "Business key - Customer number"
+        tests:
+          - not_null
+      - name: full_name
+        description: "Concatenated first and last name"
+      - name: country
+        description: "Customer country"
+        tests:
+          - not_null
+      - name: region
+        description: "Geographic region"
+        tests:
+          - accepted_values:
+              values: ['North America', 'Europe', 'Oceania', 'Asia', 'Other', 'Unknown']
+      - name: marital_status
+        description: "Marital status"
+        tests:
+          - accepted_values:
+              values: ['Single', 'Married', 'Unknown']
+      - name: gender
+        description: "Gender (prioritizes ERP over CRM data)"
+        tests:
+          - accepted_values:
+              values: ['Male', 'Female', 'Unknown']
+      - name: age_group
+        description: "Age group for analytics"
+        tests:
+          - accepted_values:
+              values: ['Under 18', '18-25', '26-35', '36-45', '46-55', '56-65', 'Over 65', 'Unknown']
+
+  - name: dim_products
+    description: "Product dimension table combining CRM and ERP product data"
+    meta:
+      layer: "gold"
+      model_type: "dimension"
+      business_owner: "analytics_team"
+      grain: "One row per unique product"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - product_key
+    columns:
+      - name: product_key
+        description: "Surrogate key for product dimension"
+        tests:
+          - not_null
+          - unique
+      - name: product_id
+        description: "Natural key - Product ID from CRM"
+        tests:
+          - not_null
+          - unique
+      - name: product_number
+        description: "Business key - Product number"
+        tests:
+          - not_null
+      - name: product_name
+        description: "Product name"
+      - name: category
+        description: "Product category from ERP"
+        tests:
+          - not_null
+      - name: subcategory
+        description: "Product subcategory from ERP"
+        tests:
+          - not_null
+      - name: product_line
+        description: "Standardized product line"
+        tests:
+          - accepted_values:
+              values: ['Mountain', 'Road', 'Other Sales', 'Touring', 'Unknown']
+      - name: product_status
+        description: "Current product status"
+        tests:
+          - accepted_values:
+              values: ['Active', 'Discontinued']
+      - name: cost_category
+        description: "Cost category for analytics"
+        tests:
+          - accepted_values:
+              values: ['No Cost', 'Low Cost (1-50)', 'Medium Cost (51-200)', 'High Cost (201-500)', 'Premium (500+)', 'Unknown']
+      - name: product_group
+        description: "High-level product grouping"
+        tests:
+          - accepted_values:
+              values: ['Bikes', 'Accessories', 'Other']
+
+  - name: dim_date
+    description: "Date dimension table for time-based analysis"
+    meta:
+      layer: "gold"
+      model_type: "dimension"
+      business_owner: "analytics_team"
+      grain: "One row per calendar date"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - date_key
+    columns:
+      - name: date_key
+        description: "Surrogate key for date dimension"
+        tests:
+          - not_null
+          - unique
+      - name: date_actual
+        description: "Actual calendar date"
+        tests:
+          - not_null
+          - unique
+      - name: year
+        description: "Year component"
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 2000
+              max_value: 2030
+      - name: quarter
+        description: "Quarter component (1-4)"
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 1
+              max_value: 4
+      - name: month
+        description: "Month component (1-12)"
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 1
+              max_value: 12
+      - name: day_of_week
+        description: "Day of week (0=Sunday, 6=Saturday)"
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 6
+
+  - name: fact_sales
+    description: "Sales fact table - central fact table for sales analytics"
+    meta:
+      layer: "gold"
+      model_type: "fact"
+      business_owner: "analytics_team"
+      grain: "One row per sales order line item"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - sales_key
+    columns:
+      - name: sales_key
+        description: "Surrogate key for sales fact"
+        tests:
+          - not_null
+          - unique
+      - name: order_number
+        description: "Sales order number"
+        tests:
+          - not_null
+      - name: customer_key
+        description: "Foreign key to customer dimension"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_customers')
+              field: customer_key
+      - name: product_key
+        description: "Foreign key to product dimension"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_products')
+              field: product_key
+      - name: order_date_key
+        description: "Foreign key to date dimension for order date"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_date')
+              field: date_key
+      - name: sales_amount
+        description: "Sales amount for the line item"
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 100000
+      - name: quantity
+        description: "Quantity sold"
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 1
+              max_value: 1000
+      - name: unit_price
+        description: "Unit price"
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 10000
+      - name: total_revenue
+        description: "Calculated total revenue (sales_amount * quantity)"
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1000000
+      - name: delivery_status
+        description: "Delivery status based on ship and due dates"
+        tests:
+          - accepted_values:
+              values: ['On Time', 'Late', 'Unknown']

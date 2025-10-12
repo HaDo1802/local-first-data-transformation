@@ -1,0 +1,151 @@
+version: 2
+
+sources:
+  - name: crm_raw
+    description: "Raw CRM system data files"
+    meta:
+      data_owner: "CRM Team"
+    tables:
+      - name: cust_info
+        description: "Customer information from CRM system"
+        meta:
+          file_format: "CSV"
+          source_location: "/tmp/databsets/source_crm/cust_info.csv"
+        columns:
+          - name: cst_id
+            description: "Customer ID - Primary Key"
+            tests:
+              - not_null
+              - unique
+          - name: cst_key
+            description: "Customer Key - Business Key"
+            tests:
+              - not_null
+          - name: cst_firstname
+            description: "Customer first name"
+          - name: cst_lastname  
+            description: "Customer last name"
+          - name: cst_marital_status
+            description: "Marital status (M/S)"
+          - name: cst_gndr
+            description: "Gender (M/F)"
+          - name: cst_create_date
+            description: "Customer creation date"
+            tests:
+              - not_null
+
+      - name: prd_info
+        description: "Product information from CRM system"
+        meta:
+          file_format: "CSV"
+          source_location: "/tmp/data/source_crmprd_info.csv"
+        columns:
+          - name: prd_id
+            description: "Product ID - Primary Key"
+            tests:
+              - not_null
+          - name: prd_key
+            description: "Product Key - Business Key"
+            tests:
+              - not_null
+          - name: prd_nm
+            description: "Product name"
+          - name: prd_cost
+            description: "Product cost"
+          - name: prd_line
+            description: "Product line category"
+          - name: prd_start_dt
+            description: "Product start date"
+          - name: prd_end_dt
+            description: "Product end date"
+
+      - name: sales_details
+        description: "Sales transaction details from CRM system"
+        meta:
+          file_format: "CSV"
+          source_location: "/tmp/datasets/source_crm/sales_details.csv"
+        columns:
+          - name: sls_ord_num
+            description: "Sales order number"
+            tests:
+              - not_null
+          - name: sls_prd_key
+            description: "Product key for the sale"
+            tests:
+              - not_null
+          - name: sls_cust_id
+            description: "Customer ID for the sale"
+            tests:
+              - not_null
+          - name: sls_order_dt
+            description: "Order date in YYYYMMDD format"
+          - name: sls_ship_dt
+            description: "Ship date in YYYYMMDD format"
+          - name: sls_due_dt
+            description: "Due date in YYYYMMDD format"
+          - name: sls_sales
+            description: "Sales amount"
+            tests:
+              - dbt_expectations.expect_column_values_to_be_between:
+                  min_value: 0
+                  max_value: 100000
+          - name: sls_quantity
+            description: "Quantity sold"
+            tests:
+              - dbt_expectations.expect_column_values_to_be_between:
+                  min_value: 1
+                  max_value: 1000
+          - name: sls_price
+            description: "Unit price"
+
+  - name: erp_raw
+    description: "Raw ERP system data files" 
+    meta:
+      data_owner: "ERP Team"
+      refresh_frequency: "daily"
+    tables:
+      - name: cust_az12
+        description: "Customer demographics from ERP system"
+        meta:
+          file_format: "CSV"
+          source_location: "/tmp/source_erp/cust_az12.csv"
+        columns:
+          - name: cid
+            description: "Customer ID"
+            tests:
+              - not_null
+          - name: bdate
+            description: "Birth date"
+          - name: gen
+            description: "Gender"
+
+      - name: loc_a101
+        description: "Customer location information from ERP system"
+        meta:
+          file_format: "CSV"
+          source_location: "/tmp/source_erp/loc_a101.csv"
+        columns:
+          - name: cid
+            description: "Customer ID"
+            tests:
+              - not_null
+          - name: cntry
+            description: "Country"
+
+      - name: px_cat_g1v2
+        description: "Product category information from ERP system"
+        meta:
+          file_format: "CSV"
+          source_location: "/tmp/source_erp/px_cat_g1v2.csv"
+        columns:
+          - name: id
+            description: "Category ID"
+            tests:
+              - not_null
+              - unique
+          - name: cat
+            description: "Category name"
+          - name: subcat
+            description: "Subcategory name"
+          - name: maintenance
+            description: "Maintenance required flag"
