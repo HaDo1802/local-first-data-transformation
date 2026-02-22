@@ -39,3 +39,4 @@ node_modules/
 
 # Ignore this personal note: 
 traditional_data_model/Architecture_Design/
+logs/
